@@ -2,19 +2,22 @@ package guru.springfamework.api.v1.mapper;
 
 import guru.springfamework.api.v1.model.CustomerDTO;
 import guru.springfamework.domain.Customer;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
+/**
+ * Created by jt on 9/27/17.
+ */
+@Mapper
 public interface CustomerMapper {
 
     CustomerMapper INSTANCE = Mappers.getMapper(CustomerMapper.class);
 
     CustomerDTO customerToCustomerDTO(Customer customer);
-    Customer toEntity(CustomerDTO customerDTO);
+
 
     CustomerDTO toDto(Customer customer);
 
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Customer partialUpdate(CustomerDTO customerDTO, @MappingTarget Customer customer);
+    Customer toEntity(CustomerDTO customerDTO);
+
 }

@@ -16,7 +16,6 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-
 public class CategoryServiceTest {
 
     public static final Long ID = 2L;
@@ -26,11 +25,9 @@ public class CategoryServiceTest {
     @Mock
     CategoryRepository categoryRepository;
 
-
     @Before
-    public void setUp() throws Exception {
+    public void setUp() throws Exception{
         MockitoAnnotations.initMocks(this);
-
         categoryService = new CategoryServiceImpl(CategoryMapper.INSTANCE, categoryRepository);
     }
 
@@ -38,19 +35,20 @@ public class CategoryServiceTest {
     public void getAllCategories() throws Exception {
 
         //given
-        List<Category> categories = Arrays.asList(new Category(), new Category(), new Category());
+        List<Category> categories = Arrays.asList(new Category(),new Category(),new Category());
+
         when(categoryRepository.findAll()).thenReturn(categories);
 
         //when
-        List<CategoryDTO> categoryDTOS = categoryService.getAllCategories();
+        List<CategoryDTO>  categoryDTOS = categoryService.getAllCategories();
 
         //then
         assertEquals(3, categoryDTOS.size());
+
     }
 
     @Test
     public void getCategoryByName() throws Exception {
-
         //given
         Category category = new Category();
         category.setId(ID);
@@ -66,4 +64,5 @@ public class CategoryServiceTest {
         assertEquals(NAME, categoryDTO.getName());
 
     }
+
 }

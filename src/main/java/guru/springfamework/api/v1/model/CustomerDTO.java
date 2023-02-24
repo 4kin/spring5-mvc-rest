@@ -1,16 +1,20 @@
 package guru.springfamework.api.v1.model;
 
-import lombok.Data;
+import lombok.*;
 
-
+import java.io.Serializable;
 
 /**
  * A DTO for the {@link guru.springfamework.domain.Customer} entity
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@EqualsAndHashCode
 public class CustomerDTO {
-    private final Long id;
-    private final String firstname;
-    private final String lastname;
+    private Long id;
+    private String firstname;
+    private String lastname;
     private String customerUrl;
 }
