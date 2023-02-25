@@ -21,10 +21,11 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class CustomerControllerTest {
+public class CustomerControllerTest extends AbstractRestControllerTest {
     public static final String ID = "1";
     @Mock
     CustomerService customerService;
@@ -72,10 +73,35 @@ public class CustomerControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstname", equalTo(firstname)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.lastname",equalTo(lastname)));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.lastname", equalTo(lastname)));
     }
 
-    CustomerDTO newCustomerDTo(Long id) {
-        return new CustomerDTO().builder().id(id).firstname("TestName").lastname("TestLastName").build();
+    @Test
+    public void testCreateNewCustomer() throws Exception {
+        //given
+        CustomerDTO customer = new CustomerDTO();
+        customer.setFirstname("Fred");
+        customer.setLastname("Flintstone");
+
+        CustomerDTO returnDto = CustomerDTO
+                .builder()
+                .firstname(customer.getFirstname())
+                .lastname(customer.getLastname())
+                .customerUrl(CustomerController.CUSTOMERS + customer.getId())
+                .build();
+
+        when(customerService.createNewCustomer(customer)).thenReturn(returnDto);
+
+        //when/then
+        mockMvc.perform(post(CustomerController.CUSTOMERS)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(customer)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.firstname", equalTo("Fred")))
+                .andExpect(jsonPath("$.customer_url", equalTo(CustomerController.CUSTOMERS + customer.getId())));
+    }
+
+    private CustomerDTO newCustomerDTo(Long id) {
+        return new CustomerDTO().builder().id(id).firstname("TestFirstName").lastname("TestLastName").build();
     }
 }

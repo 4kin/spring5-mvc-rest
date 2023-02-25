@@ -41,7 +41,7 @@ public class CustomerServiceImplTest extends TestCase {
     }
 
     @Test
-    public void testGetAllCustomers() throws Exception {
+    public void getAllCustomers() throws Exception {
         //given
         List<Customer> customers = Arrays.asList(new Customer(), new Customer(), new Customer());
 
@@ -55,7 +55,7 @@ public class CustomerServiceImplTest extends TestCase {
     }
 
 
-    @Test
+
     public void testGetCustomerById() throws Exception {
         // given
         Customer customer1 = new Customer();
@@ -75,11 +75,12 @@ public class CustomerServiceImplTest extends TestCase {
         assertEquals(customerDTO.getCustomerUrl(), CustomerController.CUSTOMERS + customer1.getId());
     }
 
-    @Test
-    public void createNewCustomer() throws Exception {
+    public void testCreateNewCustomer() throws Exception {
         // given
         CustomerDTO customerDTO = new CustomerDTO();
         customerDTO.setFirstname("Jim");
+        customerDTO.setLastname("Никитович");
+
 
         Customer savedCustomer = new Customer();
         savedCustomer.setFirstname(customerDTO.getFirstname());
@@ -92,7 +93,7 @@ public class CustomerServiceImplTest extends TestCase {
 
         //then
         assertEquals(customerDTO.getFirstname(), savedDto.getFirstname());
-        assertEquals(CustomerController.CUSTOMERS+customerDTO.getId(),savedDto.getCustomerUrl());
+        assertEquals(CustomerController.CUSTOMERS+savedCustomer.getId(),savedDto.getCustomerUrl());
 
 
     }

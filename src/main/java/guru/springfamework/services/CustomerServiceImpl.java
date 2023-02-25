@@ -60,7 +60,7 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerDTO createNewCustomer(CustomerDTO customerDTO) {
         Customer customer = customerMapper.toEntity(customerDTO);
         Customer savedCustomer = customerRepository.save(customer);
-        CustomerDTO returnDTO = customerMapper.toDto(savedCustomer);
+        CustomerDTO returnDTO = customerMapper.customerToCustomerDTO(savedCustomer);
         returnDTO.setCustomerUrl(CustomerController.CUSTOMERS+savedCustomer.getId());
         return returnDTO;
     }
