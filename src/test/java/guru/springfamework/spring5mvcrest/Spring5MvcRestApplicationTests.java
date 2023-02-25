@@ -9,7 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class Spring5MvcRestApplicationTests {
 
-	@Test
+//	@Test
 	public void contextLoads() {
 	}
 

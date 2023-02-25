@@ -40,7 +40,7 @@ public class CustomerServiceImpl implements CustomerService {
     public List<CustomerDTO> getAllCustomers() {
         return customerRepository.findAll().stream().map(customer -> {
             CustomerDTO customerDTO = customerMapper.customerToCustomerDTO(customer);
-            customerDTO.setCustomerUrl(CustomerController.CUSTOMERS + customer.getId());
+            customerDTO.setCustomerUrl(CustomerController.CUSTOMERS_URL + customer.getId());
             return customerDTO;
         }).collect(Collectors.toList());
     }
@@ -50,7 +50,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         return customerRepository.findById(id).map(customer -> {
                     CustomerDTO customerDTO = customerMapper.customerToCustomerDTO(customer);
-                    customerDTO.setCustomerUrl(CustomerController.CUSTOMERS + customer.getId());
+                    customerDTO.setCustomerUrl(CustomerController.CUSTOMERS_URL + customer.getId());
                     return customerDTO;
                 })
                 .orElseThrow(RuntimeException::new); //todo implement better exception handling
@@ -58,12 +58,26 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDTO createNewCustomer(CustomerDTO customerDTO) {
-        Customer customer = customerMapper.toEntity(customerDTO);
+        return  saveAndReturnDTO(customerMapper.toEntity(customerDTO));
+    }
+
+    private CustomerDTO saveAndReturnDTO(Customer customer) {
         Customer savedCustomer = customerRepository.save(customer);
-        CustomerDTO returnDTO = customerMapper.toDto(savedCustomer);
-        returnDTO.setCustomerUrl(CustomerController.CUSTOMERS+savedCustomer.getId());
+
+        CustomerDTO returnDTO = customerMapper.customerToCustomerDTO(savedCustomer);
+
+        returnDTO.setCustomerUrl(CustomerController.CUSTOMERS_URL +savedCustomer.getId());
+
         return returnDTO;
     }
+    @Override
+    public CustomerDTO saveCustomerByDTO(Long id, CustomerDTO customerDTO) {
+        Customer customer = customerMapper.toEntity(customerDTO);
+        customer.setId(id);
+
+        return saveAndReturnDTO(customer);
+    }
+
 
 
 }

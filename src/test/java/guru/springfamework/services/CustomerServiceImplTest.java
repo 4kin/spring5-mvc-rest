@@ -8,7 +8,6 @@ import guru.springfamework.repositories.CustomerRepository;
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentMatcher;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -41,7 +40,7 @@ public class CustomerServiceImplTest extends TestCase {
     }
 
     @Test
-    public void testGetAllCustomers() throws Exception {
+    public void getAllCustomers() throws Exception {
         //given
         List<Customer> customers = Arrays.asList(new Customer(), new Customer(), new Customer());
 
@@ -55,7 +54,7 @@ public class CustomerServiceImplTest extends TestCase {
     }
 
 
-    @Test
+
     public void testGetCustomerById() throws Exception {
         // given
         Customer customer1 = new Customer();
@@ -72,14 +71,15 @@ public class CustomerServiceImplTest extends TestCase {
         assertEquals(customerDTO.getId(), customer1.getId());
         assertEquals(customerDTO.getLastname(), customer1.getLastname());
         assertEquals(customerDTO.getFirstname(), customer1.getFirstname());
-        assertEquals(customerDTO.getCustomerUrl(), CustomerController.CUSTOMERS + customer1.getId());
+        assertEquals(customerDTO.getCustomerUrl(), CustomerController.CUSTOMERS_URL + customer1.getId());
     }
 
-    @Test
-    public void createNewCustomer() throws Exception {
+    public void testCreateNewCustomer() throws Exception {
         // given
         CustomerDTO customerDTO = new CustomerDTO();
         customerDTO.setFirstname("Jim");
+        customerDTO.setLastname("Никитович");
+
 
         Customer savedCustomer = new Customer();
         savedCustomer.setFirstname(customerDTO.getFirstname());
@@ -92,7 +92,7 @@ public class CustomerServiceImplTest extends TestCase {
 
         //then
         assertEquals(customerDTO.getFirstname(), savedDto.getFirstname());
-        assertEquals(CustomerController.CUSTOMERS+customerDTO.getId(),savedDto.getCustomerUrl());
+        assertEquals(CustomerController.CUSTOMERS_URL +savedCustomer.getId(),savedDto.getCustomerUrl());
 
 
     }

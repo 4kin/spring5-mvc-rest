@@ -4,6 +4,8 @@ import guru.springfamework.domain.Category;
 import guru.springfamework.domain.Customer;
 import guru.springfamework.repositories.CategoryRepository;
 import guru.springfamework.repositories.CustomerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -11,14 +13,14 @@ import org.springframework.stereotype.Component;
  * Created by jt on 9/24/17.
  */
 @Component
-public class Bootstrap implements CommandLineRunner{
+public class Bootstrap implements CommandLineRunner {
 //todo сделать совместимость версий
-    private final CategoryRepository categoryRespository;
-    private final CustomerRepository customerRepository;
 
+    private CategoryRepository categoryRepository;
+    private CustomerRepository customerRepository;
 
-    public Bootstrap(CategoryRepository categoryRespository, CustomerRepository customerRepository) {
-        this.categoryRespository = categoryRespository;
+    public Bootstrap(CategoryRepository categoryRepository, CustomerRepository customerRepository) {
+        this.categoryRepository = categoryRepository;
         this.customerRepository = customerRepository;
     }
 
@@ -44,13 +46,13 @@ public class Bootstrap implements CommandLineRunner{
         Category nuts = new Category();
         nuts.setName("Nuts");
 
-        categoryRespository.save(fruits);
-        categoryRespository.save(dried);
-        categoryRespository.save(fresh);
-        categoryRespository.save(exotic);
-        categoryRespository.save(nuts);
+        categoryRepository.save(fruits);
+        categoryRepository.save(dried);
+        categoryRepository.save(fresh);
+        categoryRepository.save(exotic);
+        categoryRepository.save(nuts);
 
-        System.out.println("Categories Loaded: " + categoryRespository.count());
+        System.out.println("Categories Loaded: " + categoryRepository.count());
     }
 
     private void loadCustomers() {
