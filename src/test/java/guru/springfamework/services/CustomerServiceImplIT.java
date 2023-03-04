@@ -6,7 +6,10 @@ import guru.springfamework.bootstrap.Bootstrap;
 import guru.springfamework.domain.Customer;
 import guru.springfamework.repositories.CategoryRepository;
 import guru.springfamework.repositories.CustomerRepository;
+<<<<<<< HEAD
 import org.hamcrest.core.IsNot;
+=======
+>>>>>>> origin/externalize-api
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,9 +19,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertNotNull;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.*;
-
+import static org.hamcrest.core.IsNot.not;
+import static org.junit.Assert.assertThat;
 
 /**
  * Created by jt on 10/3/17.
@@ -49,13 +54,12 @@ public class CustomerServiceImplIT {
 
     @Test
     public void patchCustomerUpdateFirstName() throws Exception {
-
         String updatedName = "UpdatedName";
         long id = getCustomerIdValue();
 
         Customer originalCustomer = customerRepository.getOne(id);
         assertNotNull(originalCustomer);
-        // save original first name
+        //save original first name
         String originalFirstName = originalCustomer.getFirstname();
         String originalLastName = originalCustomer.getLastname();
 
@@ -68,19 +72,19 @@ public class CustomerServiceImplIT {
 
         assertNotNull(updatedCustomer);
         assertEquals(updatedName, updatedCustomer.getFirstname());
-        assertThat(originalFirstName, IsNot.not(equalTo(updatedCustomer.getFirstname())));
-        assertThat(originalLastName, equalTo((updatedCustomer.getLastname())));
+        assertThat(originalFirstName, not(equalTo(updatedCustomer.getFirstname())));
+        assertThat(originalLastName, equalTo(updatedCustomer.getLastname()));
     }
 
     @Test
     public void patchCustomerUpdateLastName() throws Exception {
-
         String updatedName = "UpdatedName";
         long id = getCustomerIdValue();
 
         Customer originalCustomer = customerRepository.getOne(id);
         assertNotNull(originalCustomer);
-        // save original first/last name
+
+        //save original first/last name
         String originalFirstName = originalCustomer.getFirstname();
         String originalLastName = originalCustomer.getLastname();
 
@@ -94,12 +98,10 @@ public class CustomerServiceImplIT {
         assertNotNull(updatedCustomer);
         assertEquals(updatedName, updatedCustomer.getLastname());
         assertThat(originalFirstName, equalTo(updatedCustomer.getFirstname()));
-        assertThat(originalLastName, IsNot.not(equalTo(updatedCustomer.getLastname())));
+        assertThat(originalLastName, not(equalTo(updatedCustomer.getLastname())));
     }
 
-
-
-    private Long getCustomerIdValue() {
+    private Long getCustomerIdValue(){
         List<Customer> customers = customerRepository.findAll();
 
         System.out.println("Customers Found: " + customers.size());
