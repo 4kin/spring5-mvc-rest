@@ -1,7 +1,9 @@
 package guru.springfamework.controllers.v1;
 
 import guru.springfamework.api.v1.model.CustomerDTO;
+import guru.springfamework.controllers.RestResponseEntityExceptionHandler;
 import guru.springfamework.services.CustomerService;
+import guru.springfamework.services.ResourceNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -37,7 +39,9 @@ public class CustomerControllerTest extends AbstractRestControllerTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        mockMvc = MockMvcBuilders.standaloneSetup(customerController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(customerController)
+                .setControllerAdvice(new RestResponseEntityExceptionHandler())
+                .build();
     }
 
     @Test
@@ -159,31 +163,13 @@ public class CustomerControllerTest extends AbstractRestControllerTest {
 
         verify(customerService).deleteCustomerById(anyLong());
     }
-
     @Test
-    public void testPatchCustomer() throws Exception{
+    public void testNotFoundException() throws Exception {
 
-        //given
-        CustomerDTO customer = new CustomerDTO();
-        customer.setFirstname("Fred");
+        when(customerService.getCustomerById(anyLong())).thenThrow(ResourceNotFoundException.class);
 
-        CustomerDTO returnDTO = new CustomerDTO();
-        returnDTO.setFirstname(customer.getFirstname());
-        returnDTO.setLastname("Flintstone");
-        returnDTO.setCustomerUrl("/api/v1/customers/1");
-        when(customerService.patchCustomer(anyLong(),any(CustomerDTO.class))).thenReturn(returnDTO);
-
-        mockMvc.perform(patch("/api/v1/customers/1")
-                .contentType(MediaType.APPLICATION_JSON).content(asJsonString(customer))        )
-                .andExpect(status().isOk()).andExpect(jsonPath("$.firstname",equalTo("Fred")))
-                .andExpect(jsonPath("$.lastname",equalTo("Flintstone")))
-                .andExpect(jsonPath("$.customer_url", equalTo("/api/v1/customers/1")));
-    }
-
-    @Test
-    public void testDeleteCustomer() throws Exception{
-        mockMvc.perform(delete("/api/v1/customers/1").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-        verify(customerService).deleteCustomerById(anyLong());
+        mockMvc.perform(get(CustomerController.BASE_URL + "/222")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 }
