@@ -23,21 +23,6 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
 
-//    @Autowired
-//    public void setCategoryMapper(CategoryMapper categoryMapper) {
-//        this.categoryMapper = categoryMapper;
-//    }
-//   @Autowired
-//    public void setCategoryRepository(CategoryRepository categoryRepository) {
-//        this.categoryRepository = categoryRepository;
-//    }
-
-
-//
-//    public CategoryServiceImpl(CategoryMapper categoryMapper, CategoryRepository categoryRepository) {
-//        this.categoryMapper = categoryMapper;
-//        this.categoryRepository = categoryRepository;
-//    }
 
     @Override
     public List<CategoryDTO> getAllCategories() {

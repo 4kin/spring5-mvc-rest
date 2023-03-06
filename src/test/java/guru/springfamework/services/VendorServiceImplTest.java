@@ -46,7 +46,7 @@ public class VendorServiceImplTest {
         //given
         Vendor vendor = getVendor1();
 
-        //mokito BDD syntax
+        //mockito BDD syntax
         given(vendorRepository.findById(anyLong())).willReturn(Optional.of(vendor));
 
         //when
