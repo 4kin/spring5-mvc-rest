@@ -1,3 +1,4 @@
+
 package guru.springfamework.api.v1.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,6 +16,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class VendorDTO {
+// private Long id;
     private String name;
 
     @JsonProperty("vendor_url")
