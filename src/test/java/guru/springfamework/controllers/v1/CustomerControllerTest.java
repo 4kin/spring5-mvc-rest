@@ -163,6 +163,7 @@ public class CustomerControllerTest extends AbstractRestControllerTest {
 
         verify(customerService).deleteCustomerById(anyLong());
     }
+
     @Test
     public void testNotFoundException() throws Exception {
 
